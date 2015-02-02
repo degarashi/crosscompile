@@ -1,0 +1,46 @@
+# COPYHEADERS_EXCLUDE_DIR: 除外するサブディレクトリを設定
+# COPYHEADERS_MY_DIR: 自身のディレクトリを設定
+cmake_minimum_required(VERSION 2.8)
+# ヘッダのサブディレクトリを集計
+foreach(HEADER IN LISTS HEADERS)
+	string(REGEX MATCH ".*/${COPYHEADERS_MY_DIR}/([^/]+)/.*" DIRNAME ${HEADER})
+	if(DIRNAME)
+		set(DIRNAME ${CMAKE_MATCH_1})
+		set(EXCLUDE_FLAG FALSE)
+		foreach(E_DIR IN LISTS COPYHEADERS_EXCLUDE_DIR)
+			string(REGEX MATCH "${E_DIR}" E_NAME ${DIRNAME})
+			if(E_NAME)
+				set(EXCLUDE_FLAG TRUE)
+			endif()
+		endforeach()
+		if(NOT EXCLUDE_FLAG)
+			list(APPEND HEADERS_DIR ${DIRNAME})
+		endif()
+	endif()
+endforeach()
+list(REMOVE_DUPLICATES HEADERS_DIR)
+# サブディレクトリ内のヘッダを出力
+foreach(DIRNAME IN LISTS HEADERS_DIR)
+	unset(HEADER_LIST)
+	foreach(HEADER IN LISTS HEADERS)
+		string(REGEX MATCH ".*/${COPYHEADERS_MY_DIR}/${DIRNAME}/.*" ISMATCHED ${HEADER})
+		if(ISMATCHED)
+			# サブディレクトリ内のファイルとして追加
+			list(APPEND HEADER_LIST ${HEADER})
+		endif()
+	endforeach()
+	install(FILES ${HEADER_LIST} DESTINATION include/${COPYHEADERS_MY_DIR}/${DIRNAME})
+endforeach()
+# ルートディレクトリ内のヘッダを出力
+foreach(HEADER IN LISTS HEADERS)
+	unset(ROOTHEADER_LIST)
+	foreach(HEADER IN LISTS HEADERS)
+		string(REGEX MATCH ".*/${COPYHEADERS_MY_DIR}/[^/\\\\]+\\.hpp" ISMATCHED ${HEADER})
+		if(ISMATCHED)
+			# ルートディレクトリのファイルとして追加
+			list(APPEND ROOTHEADER_LIST ${HEADER})
+		endif()
+	endforeach()
+endforeach()
+install(FILES ${ROOTHEADER_LIST} DESTINATION include/${COPYHEADERS_MY_DIR})
+
