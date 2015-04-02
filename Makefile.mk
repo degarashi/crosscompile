@@ -61,6 +61,11 @@ linux-d-test: linux-d
 	$(call LinuxTest)
 linux-test: linux
 	$(call LinuxTest)
+ld: linux-d
+l: linux
+lc: linux-clean
+ldi: linux-d-install
+li: linux-install
 
 mingw-d:
 	$(call MinGWMake,Debug)
@@ -76,6 +81,10 @@ mingw-d-test: mingw-d
 	$(call MinGWTest)
 mingw-test: mingw
 	$(call MinGWTest)
+md: mingw-d
+m: mingw
+mc: mingw-clean
+mi: mingw-install
 
 x86-d:
 	$(call AndroidX86Make,Debug)
@@ -87,6 +96,11 @@ x86-d-install: x86-d
 	$(call AndroidX86Install)
 x86-install: x86
 	$(call AndroidX86Install)
+xd: x86-d
+x: x86
+xc: x86-clean
+xdi: x86-d-install
+xi: x86-install
 
 arm-d:
 	$(call AndroidArmMake,Debug)
@@ -98,6 +112,11 @@ arm-d-install: arm-d
 	$(call AndroidArmInstall)
 arm-install: arm
 	$(call AndroidArmInstall)
+ad: arm-d
+a: arm
+ac: arm-clean
+adi: arm-d-install
+ai: arm-install
 
 arm7-d:
 	$(call AndroidArm7Make,Debug)
@@ -109,4 +128,8 @@ arm7-d-install: arm7-d
 	$(call AndroidArm7Install)
 arm7-install: arm7
 	$(call AndroidArm7Install)
-
+a7d: arm7-d
+a7: arm7
+a7c: arm7-clean
+a7di: arm7-d-install
+a7i: arm7-install
