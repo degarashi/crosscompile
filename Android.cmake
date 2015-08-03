@@ -64,7 +64,7 @@ add_definitions(-DANDROID
 				-D_LITTLE_ENDIAN)
 #				-DPAGE_SIZE=2048
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wno-attributes -std=c++1y -I${BOOST_PATH}/include")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG -ggdb3 -O0 -UNDEBUG -fno-omit-frame-pointer -fno-strict-aliasing")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG -ggdb3 -O0 -UNDEBUG -fno-omit-frame-pointer -fno-strict-aliasing -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG -O2 -fomit-frame-pointer")
 
 set(LDFLAGS "-no-canonical-prefixes")

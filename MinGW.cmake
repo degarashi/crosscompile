@@ -27,7 +27,7 @@ link_directories($ENV{HOME}/local/i686-w64-mingw32/lib)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${DEPEND_CFLAG} -mpreferred-stack-boundary=2")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++1y")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG -Og -Wall")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG -Og -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 file(GLOB_RECURSE COMMON_CMAKE ${CMAKE_HOME_DIRECTORY} "Common.cmake")
