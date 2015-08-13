@@ -18,20 +18,10 @@ endfunction()
 
 # 環境変数のチェックとディレクトリの存在確認
 set(BOOST_PATH $ENV{BOOST_PATH})
-set(ANDROID_NDK_ROOT $ENV{ANDROID_NDK_ROOT})
-set(ANDROID_VER $ENV{ANDROID_VER})
-set(TOOLCHAIN_VERSION $ENV{TOOLCHAIN_VERSION})
-set(LLVM_VERSION $ENV{LLVM_VERSION})
+set(ANDROID_NDK_COMPILER_ROOT $ENV{ANDROID_NDK_COMPILER_ROOT})
 message(STATUS ">>-- enviroment variables check --<<")
 CheckEnvDir(BOOST_PATH "/opt/boost")
-CheckEnvDir(ANDROID_NDK_ROOT "/opt/android-ndk")
-CheckEnvDefined(ANDROID_VER "20")
-if("${ANDROID_VER}" LESS "1")
-	message(FATAL_ERROR "Environment value ANDROID_VER=${ANDROID_VER} is not valid.\n"
-						"Example: ANDROID_VER = 20")
-endif()
-CheckEnvDefined(TOOLCHAIN_VERSION "4.8")
-CheckEnvDefined(LLVM_VERSION "3.6")
+CheckEnvDir(ANDROID_NDK_COMPILER_ROOT "/opt/android-x86")
 message(STATUS ">>-- enviroment variables ok --<<")
 
 # Boost library ディレクトリが存在するか確認
@@ -41,32 +31,24 @@ if(NOT IS_DIRECTORY ${BOOST_PATH})
 	message(FATAL_ERROR "${BOOST_PATH} is not exist.")
 endif()
 
-set(ANDROID_PLATFORM "linux-x86_64")
 set(TOOL_PREFIX ${ANDROID_ARCH_LONG})
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --sysroot=${ANDROID_NDK_ROOT}/platforms/android-${ANDROID_VER}/arch-${ANDROID_ARCH_SHORT}")
 if(USE_CLANG)
-	set(CMAKE_TOOLBASE "${ANDROID_NDK_ROOT}/toolchains/llvm-${LLVM_VERSION}/prebuilt/${ANDROID_PLATFORM}/bin/")
-	set(CMAKE_C_COMPILER "${CMAKE_TOOLBASE}clang")
-	set(CMAKE_CXX_COMPILER "${CMAKE_TOOLBASE}clang++")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --gcc-toolchain=${ANDROID_NDK_ROOT}/toolchains/${ANDROID_TOOLCHAIN}-${TOOLCHAIN_VERSION}/prebuilt/${ANDROID_PLATFORM}")
+	set(C_COMPILER "clang")
+	set(CXX_COMPILER "clang++")
 else()
-	set(CMAKE_TOOLBASE "${ANDROID_NDK_ROOT}/toolchains/${ANDROID_TOOLCHAIN}-${TOOLCHAIN_VERSION}/prebuilt/${ANDROID_PLATFORM}/bin/${ANDROID_PREF}-")
-	set(CMAKE_C_COMPILER "${CMAKE_TOOLBASE}gcc")
-	set(CMAKE_CXX_COMPILER "${CMAKE_TOOLBASE}g++")
+	set(C_COMPILER "gcc")
+	set(CXX_COMPILER "g++")
 endif()
+set(CMAKE_C_COMPILER "${ANDROID_NDK_COMPILER_ROOT}/bin/${ANDROID_PREF}-${C_COMPILER}")
+set(CMAKE_CXX_COMPILER "${ANDROID_NDK_COMPILER_ROOT}/bin/${ANDROID_PREF}-${CXX_COMPILER}")
 
 add_definitions(-DUSE_OPENGLES2)
 
 # Android用のビルド設定
-include_directories(${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/${TOOLCHAIN_VERSION}/include
-					${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/${TOOLCHAIN_VERSION}/libs/${ANDROID_ARCH_LONG}/include
-					${ANDROID_NDK_ROOT}/platforms/android-${ANDROID_VER}/arch-${ANDROID_ARCH_SHORT}/usr/include
-					${BOOST_PATH}
+include_directories(${BOOST_PATH}
 					${PROJECT_SOURCE_DIR})
-link_directories(${BOOST_PATH}/android_${ARCHITECTURE}/lib
-				${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/${TOOLCHAIN_VERSION}/libs/${ANDROID_ARCH_LONG}
-				${ANDROID_NDK_ROOT}/platforms/android-${ANDROID_VER}/arch-${ANDROID_ARCH_SHORT}/usr/lib)
+link_directories(${BOOST_PATH}/android_${ARCHITECTURE}/lib)
 add_definitions(-DANDROID
 				-D__ANDROID__
 				-DGLIBC
