@@ -37,6 +37,5 @@ else()
 		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -finline-limit=64")
 	endif()
 endif()
-file(GLOB_RECURSE ANDROID_CMAKE Android.cmake)
+file(GLOB ANDROID_CMAKE "${CMAKE_CURRENT_LIST_DIR}/Android.cmake")
 include(${ANDROID_CMAKE})
-

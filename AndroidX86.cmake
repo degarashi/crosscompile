@@ -8,6 +8,6 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fstrict-aliasing -funswitch
 if(NOT USE_CLANG)
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -finline-limit=300")
 endif()
-file(GLOB_RECURSE ANDROID_CMAKE Android.cmake)
-include(${ANDROID_CMAKE})
 
+file(GLOB ANDROID_CMAKE "${CMAKE_CURRENT_LIST_DIR}/Android.cmake")
+include(${ANDROID_CMAKE})
