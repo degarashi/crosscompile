@@ -14,7 +14,7 @@ ANDROID_X86_FLAG	:= -DCMAKE_SYSTEM_NAME=Linux -DSOUND_API=opensl -DBUILD_TYPE=An
 ANDROID_ARM_FLAG	:= -DCMAKE_SYSTEM_NAME=Linux -DSOUND_API=opensl -DBUILD_TYPE=AndroidArm -DUSE_CLANG=YES
 ANDROID_ARM7_FLAG	:= -DCMAKE_SYSTEM_NAME=Linux -DSOUND_API=opensl -DBUILD_TYPE=AndroidArm -DUSE_CLANG=YES -DAS_V7A=YES
 
-CMake = mkdir -p $(1); cd $(1); cmake $(PWD) -G 'Unix Makefiles' -DSSE_LEVEL=$(SSE_LEVEL) -DCMAKE_BUILD_TYPE=$(3) -DCMAKE_INSTALL_PREFIX=$(INSTALL_PATH) $(2) ;
+CMake = mkdir -p $(1); cd $(1); cmake $(PWD) -G 'CodeBlocks - Unix Makefiles' -DSSE_LEVEL=$(SSE_LEVEL) -DCMAKE_BUILD_TYPE=$(3) -DCMAKE_INSTALL_PREFIX=$(INSTALL_PATH) $(2) ;
 Make = cd $(1); make -j$(2);
 Test = cd $(1); make test;
 Install = cd $(1); make install;
