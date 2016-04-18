@@ -42,4 +42,8 @@ elseif(DEFINED NEON_LEVEL)
 	endif()
 endif()
 add_definitions(-DBOOST_PP_VARIADICS=1)
+# デバッグビルドの際はGLibのデバッグモードをONにする
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	add_definitions(-D_GLIBCXX_DEBUG)
+endif()
 
